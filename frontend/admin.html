@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin Dashboard | ShopKart</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav>
+  <a class="brand" href="index.html">🛒 ShopKart</a>
+  <div class="navlinks">
+    <a href="index.html">Products</a>
+    <a href="cart.html">Cart <span id="cartCount">0</span></a>
+    <a href="orders.html">Orders</a>
+    <a href="admin.html">Admin</a>
+    <a href="login.html" id="authLink">Login</a>
+  </div>
+</nav>
+<main class="container">
+  <section class="hero admin-hero">
+    <div>
+      <span class="badge">ADMIN PANEL</span>
+      <h1>ShopKart Management Dashboard</h1>
+      <p>Manage products, customers, inventory and customer orders from one place.</p>
+    </div>
+  </section>
+
+  <h2>Business Overview</h2>
+  <div id="dashboard" class="stats"></div>
+
+  <section class="panel">
+    <h2>Create Customer User</h2>
+    <form id="userForm" class="product-form" onsubmit="createCustomer(event)">
+      <input id="userEmail" type="email" placeholder="Customer email" required>
+      <input id="userPassword" type="password" placeholder="Password (min 6)" minlength="6" required>
+      <button type="submit">Create User</button>
+    </form>
+    <p id="userMessage" class="message"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Registered Users</h2>
+    <div id="adminUsers" class="grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Add Product</h2>
+    <form id="productForm" class="product-form" onsubmit="createProduct(event)">
+      <input id="name" placeholder="Product name" required>
+      <input id="category" placeholder="Category" required>
+      <input id="description" placeholder="Description">
+      <input id="price" type="number" step="0.01" min="0.01" placeholder="Price ₹" required>
+      <input id="stock" type="number" min="0" placeholder="Stock" required>
+      <input id="image_url" placeholder="Image URL">
+      <button type="submit">Add Product</button>
+    </form>
+    <p id="message" class="message"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Manage Products</h2>
+    <div id="adminProducts" class="grid"></div>
+  </section>
+
+  <section class="panel">
+    <h2>Customer Orders</h2>
+    <div id="adminOrders"></div>
+  </section>
+</main>
+<script src="js/app.js"></script>
+<script>initAdmin()</script>
+</body>
+</html>

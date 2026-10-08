@@ -1,0 +1,47 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: ecommerce_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ecommerce
+      MYSQL_USER: ecommerce_user
+      MYSQL_PASSWORD: ecommerce_pass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -proot --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerce_api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: mysql+pymysql://ecommerce_user:ecommerce_pass@db:3306/ecommerce
+      JWT_SECRET: change-this-to-a-long-random-secret
+      ADMIN_EMAIL: admin@gmail.com
+      ADMIN_PASSWORD: admin123
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    image: nginx:alpine
+    container_name: ecommerce_frontend
+    restart: unless-stopped
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+volumes:
+  mysql_data:
